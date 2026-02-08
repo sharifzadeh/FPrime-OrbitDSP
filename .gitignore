@@ -1,2 +1,23 @@
-
 .DS_Store
+**/.DS_Store
+
+# F´ / build artifacts
+build*/
+**/build*/
+cmake-build-*/
+out/
+**/out/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.exe
+
+# Python
+__pycache__/
+*.pyc
+
+# VSCode / IDE
+.vscode/
+.idea/
