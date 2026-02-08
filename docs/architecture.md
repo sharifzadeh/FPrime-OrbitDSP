@@ -1,8 +1,19 @@
-# OrbitDSP architecture (concept)
+# OrbitDSP Architecture
+
+## High-level flow (conceptual)
 
 Scheduler (Svc.Sched)
-  -> OrbitDSP component compute/update
-  -> Publish TLM (raw, filtered, metrics, fault)
-  -> Emit events (mode change, fault injected/cleared)
+  -> OrbitDSP::runCycle()
+       - acquire raw measurement (simulated or input)
+       - apply noise model (optional)
+       - apply filter (EMA/Median/LPF)
+       - evaluate fault rules (optional)
+       - publish telemetry: raw, filtered, noise metrics, fault code
+       - log events on mode changes / fault injection / command execution
+       - (optional) update hardware LED status
 
-Extensible: can mirror status to hardware (LED/GPIO).
+## Observability
+
+- Commands control mode/filter/noise/fault injection
+- Telemetry exposes raw vs filtered and key counters
+- Events explain *why* state changed

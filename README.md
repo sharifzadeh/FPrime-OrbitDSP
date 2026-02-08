@@ -1,11 +1,15 @@
-# FPrime-OrbitDSP (project)
+# FPrime-OrbitDSP
 
-This folder contains the flight-software project (F´/F Prime).
-The website (GitHub Pages) lives at the repo root.
+OrbitDSP is a compact F´ demo showcasing mission-style signal processing:
+- deterministic scheduler loop
+- command/event/telemetry observability
+- noise model + filtering (EMA/Median/LPF placeholders)
+- fault injection hooks
+- optional hardware status (LED)
 
-Planned features:
-- Noise model (random + spikes + vibration)
-- Filters: EMA, Median, 1st-order LPF
-- Fault injection with auto-expiry
-- Telemetry: raw vs filtered, noise metrics, fault code
-- Events: mode change, fault injected/cleared
+This repo contains:
+- `Components/OrbitDSP`: main OrbitDSP component (placeholder implementation)
+- `OrbitDspFilter`: small filter module/component (placeholder)
+- `Deployments/OrbitDSPDeployment`: deployment topology skeleton
+- `docs/`: architecture + demo script
+- `index.html`: GitHub Pages landing page for orbitdsp.dream-on.space

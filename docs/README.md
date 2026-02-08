@@ -1,6 +1,4 @@
 # OrbitDSP Docs
 
-This folder will contain:
-- architecture overview
-- command/telemetry demo script
-- design notes (filters, noise model, fault injection)
+- `architecture.md`: high-level architecture + data flow
+- `demo-script.md`: demo-ready command/telemetry narrative
