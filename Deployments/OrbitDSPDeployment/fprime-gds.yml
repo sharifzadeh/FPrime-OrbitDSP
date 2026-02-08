@@ -1,0 +1,8 @@
+# Minimal placeholder GDS config. Adjust after you generate dictionaries.
+# This file is optional unless you run GDS locally.
+
+deployment: OrbitDSPDeployment
+
+# When you generate dictionaries, point these paths accordingly:
+# dictionary:
+#   path: build-artifacts/...

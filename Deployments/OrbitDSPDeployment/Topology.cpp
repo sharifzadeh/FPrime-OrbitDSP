@@ -1,2 +1,19 @@
-// OrbitDSPDeployment topology - placeholder
-// TODO: wire OrbitDSP component into Svc.Sched, Cmd, Tlm, Events, etc.
+#include "OrbitDSPDeployment/Topology.hpp"
+#include "OrbitDSPDeployment/Top/OrbitDSPDeploymentTopology.hpp"
+
+namespace OrbitDSPDeployment {
+
+  void initTopology() {
+    constructTopology();
+    configureTopology();
+  }
+
+  void startTopology() {
+    OrbitDSPDeployment::startTopology();
+  }
+
+  void stopTopology() {
+    teardownTopology();
+  }
+
+}
