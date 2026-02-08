@@ -42,16 +42,23 @@
     .brand{
       display:flex;align-items:center;gap:12px;
     }
-    .logo{
-      width:42px;height:42px;border-radius:12px;
-      background: linear-gradient(135deg, rgba(155,183,255,0.45), rgba(246,161,26,0.35));
+
+    /* Logo image (real) */
+    .logo-img{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      object-fit:cover;
       border:1px solid var(--line);
+      background: rgba(255,255,255,0.03);
       box-shadow: var(--shadow);
     }
+
     .brand h1{
       margin:0;font-size:18px;letter-spacing:0.2px
     }
     .brand .sub{margin:0;color:var(--muted);font-size:13px}
+
     nav{
       display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end
     }
@@ -64,6 +71,7 @@
       transition: transform .12s ease, background .12s ease, border-color .12s ease;
     }
     .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.22)}
+
     .hero{
       margin-top:18px;
       padding:26px;
@@ -74,6 +82,19 @@
       position:relative;
       overflow:hidden;
     }
+
+    /* Watermark */
+    .hero-watermark{
+      position:absolute;
+      right:-120px;
+      top:-90px;
+      width:560px;
+      opacity:0.07;
+      pointer-events:none;
+      transform: rotate(10deg);
+      filter: saturate(0.95) contrast(1.05);
+    }
+
     .badge{
       display:inline-flex;gap:10px;align-items:center;
       padding:7px 11px;border-radius:999px;
@@ -81,6 +102,8 @@
       background: rgba(0,0,0,0.18);
       color: var(--muted);
       font-size:12px;
+      position:relative;
+      z-index:1;
     }
     .dot{
       width:8px;height:8px;border-radius:99px;background: var(--accent);
@@ -90,13 +113,19 @@
       margin:14px 0 10px;
       font-size:34px;line-height:1.12;
       letter-spacing:-0.4px;
+      position:relative;
+      z-index:1;
     }
     .hero p{
       margin:0 0 18px;color:var(--muted);max-width:70ch;
       font-size:15.5px;line-height:1.6;
+      position:relative;
+      z-index:1;
     }
     .cta{
-      display:flex;flex-wrap:wrap;gap:12px;margin-top:18px
+      display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;
+      position:relative;
+      z-index:1;
     }
     .btn{
       display:inline-flex;align-items:center;gap:10px;
@@ -113,6 +142,7 @@
       border-color: rgba(246,161,26,0.35);
     }
     .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.24)}
+
     .grid{
       display:grid;
       grid-template-columns: 1.1fr 0.9fr;
@@ -122,7 +152,9 @@
     @media (max-width: 900px){
       .grid{grid-template-columns:1fr}
       .hero h2{font-size:30px}
+      .hero-watermark{width:480px; right:-140px; top:-110px;}
     }
+
     .card{
       border-radius: var(--radius);
       border:1px solid var(--line);
@@ -133,6 +165,7 @@
     .card h3{margin:0 0 10px;font-size:16px}
     .card p{margin:0;color:var(--muted);line-height:1.65;font-size:14px}
     .bullets{margin:10px 0 0;padding-left:18px;color:var(--muted);line-height:1.7;font-size:14px}
+
     .mono{
       font-family: var(--mono);
       font-size: 12.5px;
@@ -176,7 +209,8 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
+        <!-- Put your file here: assets/dream-on-space-logo.png -->
+        <img class="logo-img" src="./assets/dream-on-space-logo.png" alt="dream-on.space logo" />
         <div>
           <h1>OrbitDSP</h1>
           <p class="sub">Signal Processing + Fault Injection demo on Raspberry Pi, built with NASA JPL F´</p>
@@ -192,6 +226,8 @@
     </header>
 
     <section class="hero">
+      <img class="hero-watermark" src="./assets/dream-on-space-logo.png" alt="" aria-hidden="true" />
+
       <span class="badge"><span class="dot"></span> Flight-Software style observability: Commands · Events · Telemetry · LED status</span>
 
       <h2>Make signal processing “mission-real” inside Flight Software.</h2>
@@ -202,7 +238,6 @@
       </p>
 
       <div class="cta">
-        <!-- Replace GitHub link when you create the repo -->
         <a class="btn primary" href="https://www.youtube.com/watch?v=GmwaoRpWrjc" target="_blank" rel="noreferrer">
           ▶ <strong>Watch the demo video</strong>
         </a>
