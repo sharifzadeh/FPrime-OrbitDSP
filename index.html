@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="OrbitDSP — signal processing & fault injection demo built with NASA JPL F´ (F Prime) on Raspberry Pi." />
+  <title>OrbitDSP | dream-on.space</title>
+
+  <style>
+    :root{
+      --bg: #0b1220;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.09);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.72);
+      --line: rgba(255,255,255,0.14);
+      --accent: #f6a11a;
+      --accent2:#9bb7ff;
+      --shadow: 0 18px 45px rgba(0,0,0,0.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(155,183,255,0.22), transparent 55%),
+        radial-gradient(700px 450px at 90% 0%, rgba(246,161,26,0.18), transparent 55%),
+        radial-gradient(900px 600px at 50% 120%, rgba(255,255,255,0.08), transparent 55%),
+        var(--bg);
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:28px 18px 60px}
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:14px;margin-bottom:18px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:12px;
+    }
+    .logo{
+      width:42px;height:42px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(155,183,255,0.45), rgba(246,161,26,0.35));
+      border:1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .brand h1{
+      margin:0;font-size:18px;letter-spacing:0.2px
+    }
+    .brand .sub{margin:0;color:var(--muted);font-size:13px}
+    nav{
+      display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end
+    }
+    .chip{
+      padding:9px 12px;border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      text-decoration:none;
+      font-size:13px;color:var(--muted);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .chip:hover{transform: translateY(-1px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.22)}
+    .hero{
+      margin-top:18px;
+      padding:26px;
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .badge{
+      display:inline-flex;gap:10px;align-items:center;
+      padding:7px 11px;border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,0.18);
+      color: var(--muted);
+      font-size:12px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:99px;background: var(--accent);
+      box-shadow: 0 0 18px rgba(246,161,26,0.55);
+    }
+    .hero h2{
+      margin:14px 0 10px;
+      font-size:34px;line-height:1.12;
+      letter-spacing:-0.4px;
+    }
+    .hero p{
+      margin:0 0 18px;color:var(--muted);max-width:70ch;
+      font-size:15.5px;line-height:1.6;
+    }
+    .cta{
+      display:flex;flex-wrap:wrap;gap:12px;margin-top:18px
+    }
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:11px 14px;border-radius:12px;
+      border:1px solid var(--line);
+      text-decoration:none;
+      background: rgba(255,255,255,0.06);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      font-size:14px;
+    }
+    .btn strong{font-weight:650}
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(246,161,26,0.35), rgba(155,183,255,0.22));
+      border-color: rgba(246,161,26,0.35);
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.24)}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap:16px;
+      margin-top:16px;
+    }
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+      .hero h2{font-size:30px}
+    }
+    .card{
+      border-radius: var(--radius);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+      padding:18px;
+    }
+    .card h3{margin:0 0 10px;font-size:16px}
+    .card p{margin:0;color:var(--muted);line-height:1.65;font-size:14px}
+    .bullets{margin:10px 0 0;padding-left:18px;color:var(--muted);line-height:1.7;font-size:14px}
+    .mono{
+      font-family: var(--mono);
+      font-size: 12.5px;
+      color: rgba(255,255,255,0.80);
+      background: rgba(0,0,0,0.25);
+      border:1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 14px;
+      overflow:auto;
+    }
+    .k{
+      display:inline-block;
+      padding:2px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.05);
+      font-family: var(--mono);
+      font-size: 12px;
+      color: rgba(255,255,255,0.78);
+      margin-right:6px;margin-bottom:6px;
+    }
+    .footer{
+      margin-top:26px;
+      color: rgba(255,255,255,0.60);
+      font-size:12.5px;
+      display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;
+      padding-top:18px;border-top:1px solid var(--line);
+    }
+    .video{
+      aspect-ratio: 16/9;
+      width:100%;
+      border:1px solid var(--line);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(0,0,0,0.25);
+    }
+    iframe{width:100%;height:100%;border:0}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>OrbitDSP</h1>
+          <p class="sub">Signal Processing + Fault Injection demo on Raspberry Pi, built with NASA JPL F´</p>
+        </div>
+      </div>
+
+      <nav>
+        <a class="chip" href="https://orbitlab.dream-on.space/">OrbitLab</a>
+        <a class="chip" href="https://orbitsim.dream-on.space/">OrbitSim</a>
+        <a class="chip" href="#demo">Demo</a>
+        <a class="chip" href="#pipeline">Pipeline</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <span class="badge"><span class="dot"></span> Flight-Software style observability: Commands · Events · Telemetry · LED status</span>
+
+      <h2>Make signal processing “mission-real” inside Flight Software.</h2>
+      <p>
+        OrbitDSP is a compact F´ component that turns noisy / imperfect measurements into robust, testable behavior.
+        It supports a controllable noise model, multiple filter families, and fault injection — all driven through commands,
+        visible via telemetry and events, and mirrored on hardware status (LED).
+      </p>
+
+      <div class="cta">
+        <!-- Replace GitHub link when you create the repo -->
+        <a class="btn primary" href="https://www.youtube.com/watch?v=GmwaoRpWrjc" target="_blank" rel="noreferrer">
+          ▶ <strong>Watch the demo video</strong>
+        </a>
+        <a class="btn" href="https://github.com/sharifzadeh" target="_blank" rel="noreferrer">
+          <strong>GitHub profile</strong>
+        </a>
+        <a class="btn" href="#pipeline"><strong>See command sequence</strong></a>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h3>Why this matters</h3>
+        <p>
+          In real spacecraft and avionics, sensor data is rarely clean: random noise, vibration, EMI spikes, saturation, dropouts, and stuck-at faults.
+          If we feed raw signals directly into decision logic, we risk false alarms, missed detections, or unstable control actions.
+        </p>
+        <ul class="bullets">
+          <li>Parameterized noise model (vibration + random + spikes) for repeatable testing</li>
+          <li>Filter choices that map to common real-time DSP patterns (EMA, Median, 1st-order LPF)</li>
+          <li>Fault injection + expiry for demoing FDIR-style thinking</li>
+          <li>Mission-ops style observability: telemetry + events + deterministic scheduler loop</li>
+        </ul>
+      </section>
+
+      <section class="card" id="demo">
+        <h3>Video (2 min)</h3>
+        <div class="video" style="margin-top:12px">
+          <iframe
+            src="https://www.youtube.com/embed/GmwaoRpWrjc"
+            title="OrbitDSP demo video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+        <p style="margin-top:10px">
+          Tip: embed the video inside your PowerPoint so the 5-minute talk stays frictionless.
+        </p>
+      </section>
+
+      <section class="card" id="pipeline">
+        <h3>Command / Telemetry loop (demo-ready)</h3>
+        <p>Example sequence that highlights start marker, robust filtering under noise, fault injection, and burn/fuel monitoring.</p>
+
+        <div class="mono" style="margin-top:12px">
+CMD_SET_SCENARIO(BURN_MONITOR)           # Start marker (S)
+
+CMD_SET_FILTER(MEDIAN, alpha=0.15, win=7, cutoff=0.7)
+CMD_SET_NOISE(vib_amp=0.0, vib_hz=0.0, spike_rate=2.0, rand_sigma=0.5)   # Noise (N)
+
+CMD_INJECT_FAULT(OUT_OF_RANGE, duration_ms=3000, level=0)                # Fault (E/F) then auto-clear
+
+CMD_SET_FUEL(3.0)
+CMD_START_BURN(0.10, duration_ms=6000)
+CMD_STOP_BURN()
+        </div>
+
+        <div style="margin-top:12px">
+          <span class="k">TLM_RAW_VALUE</span>
+          <span class="k">TLM_FILT_VALUE</span>
+          <span class="k">TLM_NOISE_METRIC</span>
+          <span class="k">TLM_SPIKE_COUNT</span>
+          <span class="k">TLM_FAULT_CODE</span>
+          <span class="k">TLM_FUEL_KG</span>
+          <span class="k">TLM_BURN_ACTIVE</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Filters (quick intuition)</h3>
+        <ul class="bullets">
+          <li><strong>EMA</strong>: lightweight smoothing for white noise (fast, but sensitive to spikes)</li>
+          <li><strong>Median</strong>: robust outlier rejection (best for spikes/glitches)</li>
+          <li><strong>1st-order LPF</strong>: physics-friendly low-pass (removes high-frequency noise with predictable lag)</li>
+        </ul>
+
+        <h3 style="margin-top:16px">Noise model</h3>
+        <ul class="bullets">
+          <li><strong>vib_amp / vib_hz</strong>: sinusoidal vibration component</li>
+          <li><strong>rand_sigma</strong>: Gaussian-like random sensor noise</li>
+          <li><strong>spike_rate</strong>: stochastic spike process (approx. spikes/sec)</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="footer">
+      <div>© <span id="y"></span> dream-on.space — OrbitDSP</div>
+      <div>Built for teaching + mission-style demos (F´, commands/events/telemetry, hardware feedback)</div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
